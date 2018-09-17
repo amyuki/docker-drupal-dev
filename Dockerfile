@@ -1,7 +1,7 @@
 FROM drupal:8.6
 
 RUN apt-get update \
-    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev \
+    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin\
     && rm -rf /var/lib/apt/lists/*
 
 # install the PHP extensions we need
