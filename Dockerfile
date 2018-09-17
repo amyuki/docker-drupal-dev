@@ -28,7 +28,7 @@ RUN { \
     echo 'xdebug.remote_autostart=true'; \
     echo 'xdebug.remote_enable=true'; \
     echo 'memory_limit = 1024M'; \
-    echo 'xdebug.remote_log="/tmp/xdebug.log"'\
+    echo 'xdebug.remote_log="/tmp/xdebug.log"';\
     } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 ENV TERM xterm
