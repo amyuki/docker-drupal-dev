@@ -1,11 +1,26 @@
 FROM drupal:8.6
 
 RUN apt-get update \
-    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin zip\
+    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin zip php-uploadprogress\
     && rm -rf /var/lib/apt/lists/*
 
 # install the PHP extensions we need
-RUN docker-php-ext-install bcmath gd uploadprogress
+RUN docker-php-ext-install bcmath gd
+
+# enable php extensions
+RUN docker-php-ext-enable uploadprogress
+
+# install Xdebug, from https://xdebug.org/docs/install
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
+
+RUN { \
+    echo 'xdebug.remote_connect_back=true'; \
+    echo 'xdebug.remote_autostart=true'; \
+    echo 'xdebug.remote_enable=true'; \
+    echo 'memory_limit = 1024M'; \
+    echo 'xdebug.remote_log="/tmp/xdebug.log"';\
+    } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 # install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -18,17 +33,5 @@ RUN composer require drush/drush \
     && mv drush.phar /usr/local/bin/drush \
     && drush self-update \
     && drush init
-  
-# install Xdebug, from https://xdebug.org/docs/install
-RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
-
-RUN { \
-    echo 'xdebug.remote_connect_back=true'; \
-    echo 'xdebug.remote_autostart=true'; \
-    echo 'xdebug.remote_enable=true'; \
-    echo 'memory_limit = 1024M'; \
-    echo 'xdebug.remote_log="/tmp/xdebug.log"';\
-    } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
 ENV TERM xterm
