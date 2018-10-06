@@ -1,11 +1,11 @@
 FROM drupal:8.6
 
 RUN apt-get update \
-    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin\
+    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin zip\
     && rm -rf /var/lib/apt/lists/*
 
 # install the PHP extensions we need
-RUN docker-php-ext-install bcmath gd zip
+RUN docker-php-ext-install bcmath gd
 
 # install Composer globally
 RUN curl -sS https://getcomposer.org/installer | php \
@@ -19,6 +19,11 @@ RUN composer require drush/drush \
     && drush self-update \
     && drush init
 
+# Install PECL Uploadprogress.
+RUN pecl install uploadprogress \
+    && docker-php-ext-enable uploadprogress \
+    && echo 'extension=uploadprogress.so' >> /usr/local/etc/php/conf.d/docker-php-ext-uploadprogress.ini
+  
 # install Xdebug, from https://xdebug.org/docs/install
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
