@@ -5,11 +5,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # install the PHP extensions we need
-RUN docker-php-ext-install bcmath gd
+RUN docker-php-ext-install bcmath gd libmemcached-dev libmemcached11
 
 # install Xdebug, from https://xdebug.org/docs/install
 RUN pecl install xdebug \
-    && docker-php-ext-enable xdebug
+    && pecl install memcached \
+    && docker-php-ext-enable xdebug memcached
 
 RUN { \
     echo 'xdebug.remote_connect_back=true'; \
