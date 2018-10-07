@@ -1,11 +1,11 @@
 FROM drupal:8.6
 
 RUN apt-get update \
-    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin zip \
+    && apt-get install -y git mariadb-client vim wget apt-utils libpng-dev zlib1g-dev libnotify-bin zip libmemcached-dev libmemcached11 \
     && rm -rf /var/lib/apt/lists/*
 
 # install the PHP extensions we need
-RUN docker-php-ext-install bcmath gd libmemcached-dev libmemcached11
+RUN docker-php-ext-install bcmath gd
 
 # install Xdebug, from https://xdebug.org/docs/install
 RUN pecl install xdebug \
