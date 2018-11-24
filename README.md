@@ -1,5 +1,6 @@
 # docker-drupal-dev
-Docker image file
+
+Docker image file for drupal developing.
 
 * docker-compose.yml sample
 ```
@@ -32,5 +33,6 @@ services:
       MYSQL_DATABASE: drupal-dev
 #    command  just for windows docker client
     command: 'mysqld --innodb-flush-method=fsync'
-    ```
+
+```
     
