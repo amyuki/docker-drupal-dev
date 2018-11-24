@@ -13,9 +13,11 @@ RUN pecl install xdebug \
     && docker-php-ext-enable xdebug memcached
 
 RUN { \
-    echo 'xdebug.remote_connect_back=true'; \
-    echo 'xdebug.remote_autostart=true'; \
-    echo 'xdebug.remote_enable=true'; \
+    echo 'xdebug.remote_connect_back=0'; \
+    echo 'xdebug.remote_autostart=1'; \
+    echo 'xdebug.remote_enable=1'; \
+    echo 'xdebug.remote_port=9001'; \
+    echo 'xdebug.idekey=PHPSTORM'; \
     echo 'memory_limit = 1024M'; \
     echo 'xdebug.remote_log="/tmp/xdebug.log"';\
     } >> /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
