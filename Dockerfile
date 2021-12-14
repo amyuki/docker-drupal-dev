@@ -1,8 +1,13 @@
 FROM drupal:9.2.10-php7.4-apache-bullseye
 
+RUN apt-get update && apt-get install -y \
+    wget \
+    curl \
+    git \
+    vim 
+
 RUN pecl install xdebug \
-    && pecl install memcached \
-    && docker-php-ext-enable xdebug memcached
+    && docker-php-ext-enable xdebug
 
 RUN { \
     echo 'xdebug.remote_connect_back=0'; \
